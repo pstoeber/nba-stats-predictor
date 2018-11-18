@@ -37,7 +37,8 @@ from (
            m.home_away = 'Home'
      order by game_date desc
 
-   ) as box_view
+     ) as box_view
+
 inner join player_team_map as play_m on ( (box_view.team = play_m.team) and (
 box_view.season = play_m.season) )
 inner join basic_box_stats as basic on ( (box_view.game_hash = basic.game_hash) and (
