@@ -1,5 +1,7 @@
 """
 Cross-Validation of lasso regression
+
+python3 lasso_cv.py home_train.sql away_train.sql
 """
 
 import numpy as np
@@ -82,13 +84,10 @@ if __name__ == '__main__':
         print('Failed to connect to nba_stats_prod environment')
         sys.exit(1)
 
-    home_test_query = gen_cmd_str(extract_file(sys.argv[1]))
-    away_test_query = gen_cmd_str(extract_file(sys.argv[2]))
-    home_test_df = gen_df(connection, home_test_query)
-    away_test_df = gen_df(connection, away_test_query)
-    home_test_df.loc[:, 'minutes_played'] = home_test_df.loc[:, 'minutes_played'].apply(time_convert)
-    away_test_df.loc[:, 'minutes_played'] = away_test_df.loc[:, 'minutes_played'].apply(time_convert)
-    home_alpha = get_alphas(home_test_df[home_test_df['minutes_played'] >= 720].loc[:, 'pts':].fillna(0), 'home')
-    away_alpha = get_alphas(away_test_df[away_test_df['minutes_played'] >= 720].loc[:, 'pts':].fillna(0), 'away')
-    insert_into_database(home_alpha)
-    insert_into_database(away_alpha)
+    train_dict = {'home':gen_cmd_str(extract_file(sys.argv[1])), 'away':gen_cmd_str(extract_file(sys.argv[2]))}
+    for k, v in train_dict.items():
+        train_df = gen_df(connection, v)
+        train_df.loc[:, 'minutes_played'] = train_df.loc[:, 'minutes_played'].apply(time_convert)
+        alpha = get_alphas(train_df[train_df['minutes_played'] >= 720].loc[:, 'pts':].fillna(0), k)
+        insert_into_database(alpha)
+        print(alpha)
