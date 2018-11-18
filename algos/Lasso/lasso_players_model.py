@@ -60,7 +60,7 @@ def time_convert(minutes_played):
 def gen_test_dfs(conn, team_list, test_query):
     df_list = []
     for team in team_list:
-        test_df = gen_df(conn, test_query.format(team, team, team))
+        test_df = gen_df(conn, test_query.format(team, team, team, team, team))
         test_df['minutes_played'] = test_df.loc[:, 'minutes_played'].apply(time_convert)
         test_df = test_df.fillna(0)
         test_df = test_df.groupby(['player_id', 'name', 'team']).mean().reset_index()
@@ -84,10 +84,9 @@ def fit_lasso_model(train_df, test_list, alpha):
         total_pts_df = pd.DataFrame(total_pts, index=None, columns=['team', 'game_date', 'predicted_total_pts', 'r_squared'])
 
         print(pred_df)
-        print(total_pts_df)
-
-        insert_into_database(pred_df, 'player_prediction_results')
-        insert_into_database(total_pts_df, 'total_points_predictions')
+        print(total_pts)
+        #insert_into_database(pred_df, 'player_prediction_results')
+        #insert_into_database(total_pts_df, 'total_points_predictions')
     return
 
 def insert_into_database(df, table_name):
