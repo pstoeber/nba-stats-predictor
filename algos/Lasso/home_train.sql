@@ -42,6 +42,7 @@ from (
 
      ) as box_view
 
+<<<<<<< HEAD
 inner join(
 
      select b.game_hash, team.team_id, lu.season
@@ -53,6 +54,8 @@ inner join(
 
          ) as away_team on box_view.game_hash = away_team.game_hash
 
+=======
+>>>>>>> 8ba48113369b1bdac0c9d683bbc1b210db259795
 inner join player_team_map as play_m on ( (box_view.team = play_m.team) and (
 box_view.season = play_m.season) )
 inner join basic_box_stats as basic on ( (box_view.game_hash = basic.game_hash) and (
