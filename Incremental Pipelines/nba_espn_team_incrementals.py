@@ -1,5 +1,4 @@
 import requests
-from bs4 import BeautifulSoup
 import numpy as np
 import pandas as pd
 import re
@@ -7,6 +6,7 @@ import pymysql
 import itertools
 import datetime
 import logging
+from bs4 import BeautifulSoup
 from operator import itemgetter
 from sqlalchemy import create_engine
 
