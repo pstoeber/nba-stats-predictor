@@ -10,6 +10,7 @@ import pymysql
 import requests
 import sys
 import logging
+import time
 from sqlalchemy import create_engine
 from multiprocessing import Pool
 from multiprocessing.dummy import Pool as ThreadPool
@@ -37,24 +38,23 @@ def create_pools(driver, content):
 
 def stat_scraper(link, driver):
     options = Options()
-    #options.headless = True
     options.accept_untrusted_certs = True
     options.assume_untrusted_cert_issuer = True
-    options.add_argument('--load-extension=/Users/Philip/Documents/NBA prediction script/Incremental Pipelines/3.4_0')
+    options.add_argument('--load-extension=/Users/Philip/Documents/NBA prediction script/Incremental Pipelines/3.34.0_0')
     browser = webdriver.Chrome(executable_path=driver, chrome_options=options)
     browser.get(link[1])
+    time.sleep(20)
     browser.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div/div/div[1]/div[1]/div/div/label/select/option[1]').click()
 
-    while True:
-        try:
-            wait = WebDriverWait(browser, 120).until(EC.presence_of_element_located((By.XPATH, '/html/body/main/div[2]/div/div[2]/div/div/nba-stat-table')))
-            break
-        except TimeoutException or NoSuchElementException:
-            browser.refresh()
-            print('failed to find page')
-            logging.info('Failed to connect to page')
+    #while True:
+    try:
+        wait = WebDriverWait(browser, 120).until(EC.presence_of_element_located((By.XPATH, '/html/body/main/div[2]/div/div[2]/div/div/nba-stat-table')))
+        break
+    except TimeoutException or NoSuchElementException:
+        browser.refresh()
+        print('failed to find page')
+        logging.info('Failed to connect to page')
 
-    #browser.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div/div/div[1]/div[1]/div/div/label/select/option[1]').click()
     browser.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div/div/nba-stat-table/div[3]/div/div/select/option[1]').click()
     table = browser.find_element_by_class_name('nba-stat-table')
     content = table.get_attribute('innerHTML')
