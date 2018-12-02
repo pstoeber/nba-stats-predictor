@@ -45,7 +45,7 @@ from (
           select game_hash
           from box_scores_map_view
           where team like '{}%'
-          order by game_date desc limit 9
+          order by game_date desc limit 7
 
           ) as m
 

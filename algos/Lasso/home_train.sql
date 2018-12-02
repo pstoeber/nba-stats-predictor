@@ -43,7 +43,7 @@ from (
             inner join game_date_lookup as lu on b.game_date = lu.day
             inner join team_info as team on b.home_team = team.team
      where b.game_date < current_date and
-           lu.season > 2005
+           lu.season > 2007
 
      ) as box_view
 

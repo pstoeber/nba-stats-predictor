@@ -36,6 +36,11 @@ def time_convert(minutes_played):
     except ValueError:
         return 0
 
+def days_of_rest(df):
+    df['days_of_rest'] = df.game_date.diff().dt.days.fillna(0).astype(int)
+    df[df['days_of_rest'] < 0] = 0
+    return df
+
 def get_alphas(df, flag):
     X_test, X_train, y_test, y_train = train_test_split(df.loc[:, 'minutes_played':], df['pts'], test_size=.33)
     alphas = np.logspace(-4, -1, 100)
@@ -88,6 +93,7 @@ if __name__ == '__main__':
     for k, v in train_dict.items():
         train_df = gen_df(connection, v)
         train_df.loc[:, 'minutes_played'] = train_df.loc[:, 'minutes_played'].apply(time_convert)
+        train_df = days_of_rest(train_df)
         alpha = get_alphas(train_df[train_df['minutes_played'] >= 720].loc[:, 'pts':].fillna(0), k)
         insert_into_database(alpha)
         print(alpha)

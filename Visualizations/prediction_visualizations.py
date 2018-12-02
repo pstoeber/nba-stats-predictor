@@ -59,8 +59,8 @@ if __name__ == '__main__':
 
     player_pred_df = extract_data(connection, create_cmd_str(extract_sql(sys.argv[1])))
     player_pred_to_actual_pts(player_pred_df)
-    #win_lose_prob_df = extract_data(connection, create_cmd_str(extract_sql(sys.argv[2])))
-    #win_lose_prob(win_lose_prob_df)
+    win_lose_prob_df = extract_data(connection, create_cmd_str(extract_sql(sys.argv[2])))
+    win_lose_prob(win_lose_prob_df)
     total_pts_pred_df = extract_data(connection, create_cmd_str(extract_sql(sys.argv[3])))
     plot_total_pts_pred(total_pts_pred_df)
     total_pts_comp_df = extract_data(connection, create_cmd_str(extract_sql(sys.argv[4])))

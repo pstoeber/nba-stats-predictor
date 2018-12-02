@@ -57,14 +57,19 @@ def time_convert(minutes_played):
     except ValueError:
         return 0
 
+def days_of_rest(df):
+    df['days_of_rest'] = df.game_date.diff().dt.days.fillna(0).astype(int)
+    df[df['days_of_rest'] < 0] = 0
+    return df
+
 def gen_test_dfs(conn, team_list, test_query):
     df_list = []
     for team in team_list:
         test_df = gen_df(conn, test_query.format(team, team, team, team, team))
         test_df['minutes_played'] = test_df.loc[:, 'minutes_played'].apply(time_convert)
-        test_df = test_df.fillna(0)
-        test_df = test_df.groupby(['player_id', 'name', 'team']).mean().reset_index()
-        df_list.append(test_df)
+        test_df = test_df.fillna(0).groupby(['player_id', 'name', 'team'], sort=False)
+        max_dates = test_df['game_date'].max().reset_index().loc[:, 'game_date'].apply(lambda x: (datetime.date.today() - x).days)
+        df_list.append(pd.concat([test_df.mean().reset_index(), max_dates], axis=1))
     return df_list
 
 def fit_lasso_model(train_df, test_list, alpha):
@@ -108,6 +113,7 @@ if __name__ == '__main__':
     for c, (k, v) in enumerate(train_dict.items()):
         train_df = gen_df(connection, v)
         train_df['minutes_played'] = train_df.loc[:, 'minutes_played'].apply(time_convert)
+        train_df = days_of_rest(train_df)
 
         test_query = gen_cmd_str(extract_file(sys.argv[3]))
         tests = gen_test_dfs(connection, schedule.loc[:, k].tolist(), test_query)
