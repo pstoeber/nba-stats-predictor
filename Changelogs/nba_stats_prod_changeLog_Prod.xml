@@ -1123,22 +1123,22 @@
         from total_points_predictions as tp
         inner join (
 
-                  select team, game_date, predicted_total_pts as pts, 'predicted' as flag
-                  from total_points_predictions
+              select team, game_date, predicted_total_pts as pts, 'predicted' as flag
+              from total_points_predictions
 
-                  union
+              union
 
-                  select m.team,
-                         m.game_date,
-                         (case
-                          when m.home_away = 'Home' then r.home_score
-                          else r.away_score
-                          end) as actual_pts,
-                         'actual' as flag
-                  from total_points_predictions as tp
-                         inner join box_scores_map_view as m on tp.team = m.team and tp.game_date = m.game_date
-                         inner join game_results as r on m.game_hash = r.game_hash
-                  order by game_date asc
+              select m.team,
+                     m.game_date,
+                     (case
+                      when m.home_away = 'Home' then r.home_score
+                      else r.away_score
+                      end) as actual_pts,
+                     'actual' as flag
+              from total_points_predictions as tp
+                     inner join box_scores_map_view as m on tp.team = m.team and tp.game_date = m.game_date
+                     inner join game_results as r on m.game_hash = r.game_hash
+              order by game_date asc
 
                   ) as points on tp.team = points.team and tp.game_date = points.game_date;
       </createView>
@@ -1175,6 +1175,168 @@
         insert into c_values
         select *
         from nba_stats.c_values;
+      </sql>
+    </changeSet>
+
+    <changeSet id="97" author="Philip">
+      <createTable tableName="player_misc_stats">
+        <column name="game_hash" type="varchar(200)">
+          <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="player_id" type="int">
+          <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="pts_off_to" type="int"></column>
+        <column name="second_chance_pts" type="int"></column>
+        <column name="fbps" type="int"></column>
+        <column name="pitp" type="int"></column>
+        <column name="opp_pts_off_to" type="int"></column>
+        <column name="opp_second_chance_pts" type="int"></column>
+        <column name="opp_fbps" type="int"></column>
+        <column name="opp_pitp" type="int"></column>
+        <column name="blk" type="int"></column>
+        <column name="blka" type="int"></column>
+        <column name="pf" type="int"></column>
+        <column name="pfd" type="int"></column>
+      </createTable>
+    </changeSet>
+
+    <changeSet id="98" author="Philip">
+      <addForeignKeyConstraint baseColumnNames="player_id"
+          baseTableName="player_misc_stats"
+          constraintName="player_misc_stats_player_id_fk"
+          referencedColumnNames="player_id"
+          referencedTableName="player_info"/>
+    </changeSet>
+
+    <changeSet id="99" author="Philip">
+      <addForeignKeyConstraint baseColumnNames="game_hash"
+          baseTableName="player_misc_stats"
+          constraintName="player_misc_stats_game_hash_fk"
+          referencedColumnNames="game_hash"
+          referencedTableName="box_score_map"/>
+    </changeSet>
+
+    <changeSet id="100" author="Philip">
+      <createTable tableName="player_scoring_stats">
+        <column name="game_hash" type="varchar(200)">
+          <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="player_id" type="int">
+          <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="pct_2pt_fga" type="float"></column>
+        <column name="pct_3pt_fga" type="float"></column>
+        <column name="pct_pt_2pt" type="float"></column>
+        <column name="pct_pts_2pt_mr" type="float"></column>
+        <column name="pct_pts_3pt" type="float"></column>
+        <column name="pct_pts_fbps" type="float"></column>
+        <column name="pct_pts_ft" type="float"></column>
+        <column name="pct_pts_off_to" type="float"></column>
+        <column name="pct_pts_pitp" type="float"></column>
+        <column name="2pt_fgm_pct_ast" type="float"></column>
+        <column name="2pt_fgm_pct_uast" type="float"></column>
+        <column name="3pt_fgm_pct_ast" type="float"></column>
+        <column name="3pt_fgm_pct_uast" type="float"></column>
+        <column name="fgm_pct_ast" type="float"></column>
+        <column name="fgm_pct_uast" type="float"></column>
+      </createTable>
+    </changeSet>
+
+    <changeSet id="101" author="Philip">
+      <addForeignKeyConstraint baseColumnNames="player_id"
+          baseTableName="player_scoring_stats"
+          constraintName="player_scoring_stats_player_id_fk"
+          referencedColumnNames="player_id"
+          referencedTableName="player_info"/>
+    </changeSet>
+
+    <changeSet id="102" author="Philip">
+      <addForeignKeyConstraint baseColumnNames="game_hash"
+          baseTableName="player_scoring_stats"
+          constraintName="player_scoring_stats_game_hash_fk"
+          referencedColumnNames="game_hash"
+          referencedTableName="box_score_map"/>
+    </changeSet>
+
+    <changeSet id="103" author="Philip">
+      <createTable tableName="player_usage_stats">
+        <column name="game_hash" type="varchar(200)">
+          <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="player_id" type="int">
+          <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="usage_pct" type="float"></column>
+        <column name="pct_fgm" type="float"></column>
+        <column name="pct_fga" type="float"></column>
+        <column name="pct_3pm" type="float"></column>
+        <column name="pct_3pa" type="float"></column>
+        <column name="pct_ftm" type="float"></column>
+        <column name="pct_fta" type="float"></column>
+        <column name="pct_oreb" type="float"></column>
+        <column name="pct_dreb" type="float"></column>
+        <column name="pct_reb" type="float"></column>
+        <column name="pct_ast" type="float"></column>
+        <column name="pct_tov" type="float"></column>
+        <column name="pct_stl" type="float"></column>
+        <column name="pct_blk" type="float"></column>
+        <column name="pct_blka" type="float"></column>
+        <column name="pct_pf" type="float"></column>
+        <column name="pct_pfd" type="float"></column>
+        <column name="pct_pts" type="float"></column>
+      </createTable>
+    </changeSet>
+
+    <changeSet id="104" author="Philip">
+      <addForeignKeyConstraint baseColumnNames="player_id"
+          baseTableName="player_scoring_stats"
+          constraintName="player_usage_stats_player_id_fk"
+          referencedColumnNames="player_id"
+          referencedTableName="player_info"/>
+    </changeSet>
+
+    <changeSet id="105" author="Philip">
+      <addForeignKeyConstraint baseColumnNames="game_hash"
+          baseTableName="player_scoring_stats"
+          constraintName="player_usage_stats_game_hash_fk"
+          referencedColumnNames="game_hash"
+          referencedTableName="box_score_map"/>
+    </changeSet>
+
+    <changeSet id="106" author="Philip">
+      <sql>
+        set session sql_mode = '';
+
+        insert into nba_stats_prod.player_misc_stats
+        select *
+        from nba_stats.player_misc_stats_view;
+
+        set session sql_mode = default;
+      </sql>
+    </changeSet>
+
+    <changeSet id="107" author="Philip">
+      <sql>
+        set session sql_mode = '';
+
+        insert into nba_stats_prod.player_scoring_stats
+        select *
+        from nba_stats.player_scoring_stats_view;
+
+        set session sql_mode = default;
+      </sql>
+    </changeSet>
+
+    <changeSet id="108" author="Philip">
+      <sql>
+        set session sql_mode = '';
+
+        insert into nba_stats_prod.player_usage_stats
+        select *
+        from nba_stats.player_usage_stats_view;
+
+        set session sql_mode = default;
       </sql>
     </changeSet>
 
