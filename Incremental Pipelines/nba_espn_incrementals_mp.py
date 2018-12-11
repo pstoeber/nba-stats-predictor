@@ -74,6 +74,7 @@ def truncate_tables(conn):
     truncate_list = ['player_info', 'RegularSeasonAverages', 'RegularSeasonTotals', 'RegularSeasonMiscTotals']
     for table in truncate_list:
         sql_execute(conn, 'truncate table {}'.format(table))
+    return
 
 def find_player_id(conn, name, team, exp, index):
     try:
@@ -101,9 +102,12 @@ def engine(df, player_bool, player_id, table):
         insert_into_database(engine, df[df['SEASON'] == '\'18-\'19'], table)
     elif not player_bool and not df.empty:
         insert_into_database(engine, df, table)
+    return
 
 def insert_into_database(engine, df, table):
     df.to_sql(con=engine, name=table, if_exists='append', index=False)
+    engine.dispose()
+    return
 
 def main():
     logging.basicConfig(filename='nba_stat_incrementals_log.log', filemode='a', level=logging.INFO)

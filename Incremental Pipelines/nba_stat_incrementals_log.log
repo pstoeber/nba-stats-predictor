@@ -12,3 +12,5 @@ INFO:root:Dropping nba_stats_test database 2018-12-10 20:57:59.004840
 INFO:root:nba_stats_test schema re-created 2018-12-10 20:57:59.201937
 INFO:root:Calling liquibase for nba_stats_prod refresh 2018-12-10 20:57:59.203286
 INFO:root:Incrementials Pipeline completed 2018-12-10 21:01:44.699236
+INFO:root:Beginning ESPN players incrementals pipeline 2018-12-10 21:50:52.178222
+INFO:root:ESPN players incrementals pipeline completed 2018-12-10 21:52:37.899695
