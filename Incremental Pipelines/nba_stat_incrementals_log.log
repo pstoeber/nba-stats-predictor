@@ -1,16 +1,14 @@
-INFO:root:Attempting to connect to nba_stats_staging database 2018-12-10 20:57:18.648469
-INFO:root:Successfully connected to nba_stats_staging 2018-12-10 20:57:18.656223
-INFO:root:Backing up nba_stats_backup database 2018-12-10 20:57:18.656357
-INFO:root:Backing up complete 2018-12-10 20:57:30.698612
-INFO:root:Compressing backup of nba_stats_backup database 2018-12-10 20:57:30.698903
-INFO:root:Compression complete 2018-12-10 20:57:50.874872
-INFO:root:Refreshing active_rosters table 2018-12-10 20:57:50.875050
-INFO:root:Active_rosters table refresh complete 2018-12-10 20:57:55.682143
-INFO:root:Refreshing injured_players table 2018-12-10 20:57:55.685692
-INFO:root:Injured_players table refresh complete 2018-12-10 20:57:59.002582
-INFO:root:Dropping nba_stats_test database 2018-12-10 20:57:59.004840
-INFO:root:nba_stats_test schema re-created 2018-12-10 20:57:59.201937
-INFO:root:Calling liquibase for nba_stats_prod refresh 2018-12-10 20:57:59.203286
-INFO:root:Incrementials Pipeline completed 2018-12-10 21:01:44.699236
-INFO:root:Beginning ESPN players incrementals pipeline 2018-12-10 21:50:52.178222
-INFO:root:ESPN players incrementals pipeline completed 2018-12-10 21:52:37.899695
+INFO:root:Attempting to connect to nba_stats_staging database 2018-12-12 18:58:46.528580
+INFO:root:Successfully connected to nba_stats_staging 2018-12-12 18:58:46.556538
+INFO:root:Backing up nba_stats_backup database 2018-12-12 18:58:46.556705
+INFO:root:Backing up complete 2018-12-12 18:59:00.871195
+INFO:root:Compressing backup of nba_stats_backup database 2018-12-12 18:59:00.871385
+INFO:root:Compression complete 2018-12-12 18:59:21.894570
+INFO:root:Refreshing active_rosters table 2018-12-12 18:59:21.894741
+INFO:root:Active_rosters table refresh complete 2018-12-12 18:59:28.060742
+INFO:root:Refreshing injured_players table 2018-12-12 18:59:28.062254
+INFO:root:Injured_players table refresh complete 2018-12-12 18:59:31.646243
+INFO:root:Dropping nba_stats_test database 2018-12-12 18:59:31.647084
+INFO:root:nba_stats_test schema re-created 2018-12-12 18:59:31.788856
+INFO:root:Calling liquibase for nba_stats_prod refresh 2018-12-12 18:59:31.793554
+INFO:root:Incrementials Pipeline completed 2018-12-12 19:03:30.500233
