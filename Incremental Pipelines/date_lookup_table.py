@@ -11,6 +11,9 @@ from multiprocessing import Pool
 from multiprocessing.dummy import Pool as ThreadPool
 from sqlalchemy import create_engine
 
+def gen_db_conn():
+    return pymysql.connect(host='localhost', user='root', password='Sk1ttles', db='nba_stats', autocommit=True)
+
 def date_gen():
     date_list = []
     start = datetime.datetime.strptime('2018-1-1', '%Y-%m-%d').date()
@@ -20,9 +23,6 @@ def date_gen():
         date_list.append(str(start).split('-')[1:])
         start += datetime.timedelta(days=1)
     return date_list
-
-def gen_db_conn():
-    return pymysql.connect(host='localhost', user='root', password='Sk1ttles', db='nba_stats', autocommit=True)
 
 def sql_execute(sql):
     exe = gen_db_conn().cursor()
