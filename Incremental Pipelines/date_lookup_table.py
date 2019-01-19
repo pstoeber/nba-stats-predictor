@@ -1,57 +1,74 @@
 """
 script used to create a lookup table mapping individual games to seasons within the QDM
 """
-
+import numpy as np
+import pandas as pd
 import datetime
 import logging
 import pymysql
-import re
-from collections import defaultdict
-
-def truncate_table(conn):
-    drop = 'truncate table game_date_lookup'
-    sql_execute(conn, drop)
+from functools import partial
+from multiprocessing import Pool
+from multiprocessing.dummy import Pool as ThreadPool
+from sqlalchemy import create_engine
 
 def date_gen():
     date_list = []
     start = datetime.datetime.strptime('2018-1-1', '%Y-%m-%d').date()
     end_date = datetime.datetime.strptime('2018-12-31', '%Y-%m-%d').date()
-    step = datetime.timedelta(days=1)
 
     while start <= end_date:
-        date = str(start).split('-')
-        if date[1:] not in date_list:
-            date_list.append(date[1:])
-        start += step
+        date_list.append(str(start).split('-')[1:])
+        start += datetime.timedelta(days=1)
     return date_list
 
-def gen_lookup_dict(conn, date_list):
-    exe = conn.cursor()
-    get_years = 'select year(game_date) from box_score_map group by year(game_date)'
-    years = sql_execute(conn, get_years)
-    years = [i[0] for i in years]
+def gen_db_conn():
+    return pymysql.connect(host='localhost', user='root', password='Sk1ttles', db='nba_stats', autocommit=True)
 
-    for year in years:
-        for date in date_list:
-            try:
-                if int(date[0]) < 6:
-                    exe.execute('insert into game_date_lookup values(str_to_date(\'' + '-'.join([str(i) for i in [year] + date]) + '\', \'%Y-%m-%d\'), ' + str(year) + ')')
-                else:
-                    exe.execute('insert into game_date_lookup values(str_to_date(\'' + '-'.join([str(i) for i in [year] + date]) + '\', \'%Y-%m-%d\'), ' + str(year+1) + ')')
-            except:
-                logging.info('[INVALID DATE]' + '-'.join([str(i) for i in [year] + date]))
-def sql_execute(conn, query):
-    exe = conn.cursor()
-    exe.execute(query)
+def sql_execute(sql):
+    exe = gen_db_conn().cursor()
+    exe.execute(sql)
     return exe.fetchall()
+
+def find_years(conn):
+    get_years = 'select year(game_date) from box_score_map group by year(game_date)'
+    years = sql_execute(get_years)
+    return [i[0] for i in years]
+
+def gen_pools(years, dates):
+    pool = Pool()
+    results = pool.map(partial(gen_lookup, years=years), dates)
+    pool.close()
+    pool.join()
+    return results
+
+def gen_lookup(date, years):
+    date_list = []
+    for year in years:
+        year_val = 0
+        if int(date[0]) < 6:
+            year_val = year
+        else:
+            year_val = year+1
+        str_date = '{}-{}'.format(str(year), '-'.join([i for i in date]))
+        date_list.append([datetime.datetime.strptime(str_date, '%Y-%m-%d').date(), year_val])
+    return pd.DataFrame(np.array(date_list), index=None, columns=['day', 'season'])
+
+def insert_into_database(df):
+    engine = create_engine('pymysql+mysql://', creator=gen_db_conn)
+    df.to_sql(con=engine, name='game_date_lookup', if_exists='replace', index=False)
+    engine.dispose()
+    return
 
 def main():
     logging.basicConfig(filename='nba_stat_incrementals_log.log', filemode='a', level=logging.INFO)
     logging.info('Beginning generation of date lookup table {}'.format(str(datetime.datetime.now())))
-    myConnection = pymysql.connect(host="localhost", user="root", password="Sk1ttles", db="nba_stats", autocommit=True)
-    truncate_table(myConnection)
-    date_list = date_gen()
-    gen_lookup_dict(myConnection, date_list)
+
+    conn = gen_db_conn()
+    dates = date_gen()
+    years = find_years(conn)
+    all_dates = gen_pools(years, dates)
+    dates_lu = pd.concat(all_dates)
+
     logging.info('Date lookup table generated {}'.format(str(datetime.datetime.now())))
 
 if __name__ == '__main__':

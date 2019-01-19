@@ -71,6 +71,7 @@ def insert_into_nba_stats(conn):
         insert = 'insert into nba_stats.{} (select * from nba_stats_staging.{})'.format(table[0], table[0])
         sql_execute(conn, insert)
     logging.info('Insert completed {}'.format(str(datetime.datetime.now())))
+    return
 
 def pipeline_auditlog(conn):
     pipeline_insert = 'insert into nba_stats.pipeline_auditlog values ("{}", "{}")'.format(gen_hash(str(datetime.datetime.now())), str(datetime.datetime.now()))
