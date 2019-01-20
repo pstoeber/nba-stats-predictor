@@ -1,4 +1,4 @@
-insert into nba_stats_backup.team_traditional_boxscore_stats select `b_map`.`game_hash` AS `game_hash`,
+insert into nba_stats_prod.team_traditional_boxscore_stats select `b_map`.`game_hash` AS `game_hash`,
                                                            `a`.`TEAM`          AS `team`,
                                                            `a`.`W/L`           AS `W/L`,
                                                            `a`.`MIN`           AS `min`,

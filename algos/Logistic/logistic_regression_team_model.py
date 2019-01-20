@@ -78,17 +78,12 @@ def insert_into_database(df):
     engine.dispose()
     return
 
-if __name__ == '__main__':
-    try:
-        connection = pymysql.connect(host='localhost', user='root', password='Sk1ttles', db='nba_stats_prod')
-    except:
-        print('Unable to connect to nba_stats_prod environment')
-        sys.exit(1)
-
+def main(arg1, arg2, arg3):
+    connection = pymysql.connect(host='localhost', user='root', password='Sk1ttles', db='nba_stats_prod')    
     schedule = get_games()
     Cs = get_c_values(connection)
-    train_dict = {'home':gen_cmd_str(extract_file(sys.argv[1])), 'away':gen_cmd_str(extract_file(sys.argv[2]))}
-    test_query = gen_cmd_str(extract_file(sys.argv[3]))
+    train_dict = {'home':gen_cmd_str(extract_file(arg1)), 'away':gen_cmd_str(extract_file(arg2))}
+    test_query = gen_cmd_str(extract_file(arg3))
 
     for c, (k, v) in enumerate(train_dict.items()):
         train_df = gen_df(connection, v)
@@ -96,3 +91,6 @@ if __name__ == '__main__':
         train_df.drop('win_lose', axis=1, inplace=True)
         tests = gen_test_dfs(connection, schedule.loc[:, k].tolist(), test_query)
         fit_logistic_model(train_df, tests, Cs[c])
+
+if __name__ == '__main__':
+    main(sys.argv[1], sys.argv[2], sys.argv[3])

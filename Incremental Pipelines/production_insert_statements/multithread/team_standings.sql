@@ -1,0 +1,22 @@
+insert into nba_stats_prod.team_standings (select distinct `stand`.`team`                                               AS `team`,
+                                                    `stand`.`conference`                                         AS `conference`,
+                                                    `stand`.`season`                                             AS `season`,
+                                                    `stand`.`W`                                                  AS `w`,
+                                                    `stand`.`L`                                                  AS `l`,
+                                                    `stand`.`PCT`                                                AS `pct`,
+                                                    `stand`.`GB`                                                 AS `gb`,
+                                                    substr(`stand`.`HOME`, 1, (locate('-', `stand`.`HOME`) - 1)) AS `home_wins`,
+                                                    substr(`stand`.`HOME`, (locate('-', `stand`.`HOME`) + 1))    AS `home_loses`,
+                                                    substr(`stand`.`AWAY`, 1, (locate('-', `stand`.`AWAY`) - 1)) AS `away_wins`,
+                                                    substr(`stand`.`AWAY`, (locate('-', `stand`.`AWAY`) + 1))    AS `away_loses`,
+                                                    substr(`stand`.`DIV`, 1, (locate('-', `stand`.`DIV`) - 1))   AS `div_wins`,
+                                                    substr(`stand`.`DIV`, (locate('-', `stand`.`DIV`) + 1))      AS `div_loses`,
+                                                    substr(`stand`.`CONF`, 1, (locate('-', `stand`.`CONF`) - 1)) AS `conf_wins`,
+                                                    substr(`stand`.`CONF`, (locate('-', `stand`.`CONF`) + 1))    AS `conf_loses`,
+                                                    `stand`.`PPG`                                                AS `ppg`,
+                                                    `stand`.`OPP_PPG`                                            AS `opp_ppg`,
+                                                    `stand`.`DIFF`                                               AS `diff`,
+                                                    `stand`.`STRK`                                               AS `strk`,
+                                                    `stand`.`L10`                                                AS `l10`
+                                    from (`nba_stats`.`team_standings` `stand`
+                                           join `nba_stats`.`team_info` `team` on ((`stand`.`team` = `team`.`TEAM`))));
