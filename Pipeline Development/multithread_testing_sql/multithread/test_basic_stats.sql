@@ -1,5 +1,3 @@
--- set session sql_mode = "NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER";
-
 insert into nba_stats_backup.basic_box_stats(
   select b.game_hash,
          p.player_id,
@@ -25,5 +23,3 @@ insert into nba_stats_backup.basic_box_stats(
    from nba_stats.basic_box_stats as b
    inner join nba_stats.player_info_view as p on b.name = p.name
    inner join nba_stats.box_score_map_view as bm on b.game_hash = bm.game_hash);
-
--- set session sql_mode = default;
