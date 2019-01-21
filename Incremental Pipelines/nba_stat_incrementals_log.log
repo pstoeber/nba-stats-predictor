@@ -1,10 +1,37 @@
-INFO:root:Attempting to connect to nba_stats_staging database 2019-01-20 01:04:22.180329
-INFO:root:Successfully connected to nba_stats_staging 2019-01-20 01:04:22.187989
-INFO:root:Beginning NBA Reference players incrementals pipeline 2019-01-20 01:04:22.188149
-INFO:root:NBA Reference players incrementals pipeline completed successfully 2019-01-20 01:04:27.994542
-INFO:root:Beginning generation of date lookup table 2019-01-20 01:04:27.997017
-INFO:root:Date lookup table generated 2019-01-20 01:04:28.288716
-INFO:root:Dropping nba_stats_test database 2019-01-20 01:04:28.291276
-INFO:root:nba_stats_test schema re-created 2019-01-20 01:04:28.448454
-INFO:root:Calling liquibase for nba_stats_prod refresh 2019-01-20 01:04:28.449991
-INFO:root:Incrementials Pipeline completed 2019-01-20 01:04:33.949281
+INFO:root:Attempting to connect to nba_stats_staging database 2019-01-21 08:04:16.702696
+INFO:root:Successfully connected to nba_stats_staging 2019-01-21 08:04:16.710949
+INFO:root:Backing up nba_stats_backup database 2019-01-21 08:04:16.711151
+INFO:root:Backing up complete 2019-01-21 08:04:27.943245
+INFO:root:Compressing backup of nba_stats_backup database 2019-01-21 08:04:27.943514
+INFO:root:Compression complete 2019-01-21 08:04:48.445297
+INFO:root:Refreshing active_rosters table 2019-01-21 08:04:48.445487
+INFO:root:Active_rosters table refresh complete 2019-01-21 08:04:52.942305
+INFO:root:Refreshing injured_players table 2019-01-21 08:04:52.946669
+INFO:root:Injured_players table refresh complete 2019-01-21 08:04:56.030779
+INFO:root:Beginning ESPN players incrementals pipeline 2019-01-21 08:04:56.032896
+INFO:root:ESPN players incrementals pipeline completed 2019-01-21 08:06:09.859259
+INFO:root:Beginning ESPN team incrementials pipeline 2019-01-21 08:06:09.877715
+INFO:root:Beginning ESPN team standings pipeline 2019-01-21 08:06:10.849587
+INFO:root:ESPN team standings pipeline completed successfully 2019-01-21 08:06:11.890543
+INFO:root:Beginning NBA Reference players incrementals pipeline 2019-01-21 08:06:11.892780
+INFO:root:NBA Reference players incrementals pipeline completed successfully 2019-01-21 08:06:16.542834
+INFO:root:Starting NBA Stats incrementals pipeline 2019-01-21 08:06:16.544236
+INFO:root:NBA Stats incrementals pipeline completed successfully 2019-01-21 08:06:37.882580
+INFO:root:Updating ESPN seasons 2019-01-21 08:07:03.184023
+INFO:root:ESPN seasons update completed successfully 2019-01-21 08:07:03.248538
+INFO:root:Updating ESPN team names 2019-01-21 08:07:03.250666
+INFO:root:ESPN team names update completed successfully 2019-01-21 08:07:04.537888
+INFO:root:Beginning NBA Stats team name 2019-01-21 08:07:04.539644
+INFO:root:NBA Stats team name update completed successfully 2019-01-21 08:07:09.667069
+INFO:root:Beginning NBA Reference player name update 2019-01-21 08:07:09.668070
+INFO:root:NBA Reference player name update completed successfully 2019-01-21 08:07:10.395081
+INFO:root:Deleting Max season from ESPN tables 2019-01-21 08:07:10.396299
+INFO:root:Deletion from ESPN tables complete 2019-01-21 08:07:10.573155
+INFO:root:Beginning insert into nba_stats from nba_stats_staging 2019-01-21 08:07:10.573411
+INFO:root:Insert completed 2019-01-21 08:07:11.009614
+INFO:root:Beginning generation of date lookup table 2019-01-21 08:07:11.011232
+INFO:root:Date lookup table generated 2019-01-21 08:07:11.301793
+INFO:root:Dropping nba_stats_prod database 2019-01-21 08:07:11.355413
+INFO:root:nba_stats_prod schema re-created 2019-01-21 08:07:11.474444
+INFO:root:Calling liquibase for nba_stats_prod refresh 2019-01-21 08:07:11.476592
+INFO:root:Incrementials Pipeline completed 2019-01-21 08:07:17.184061

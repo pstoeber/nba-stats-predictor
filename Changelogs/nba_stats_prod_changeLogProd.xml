@@ -300,7 +300,7 @@
     </changeSet>
 
     <changeSet id="21" author="Philip">
-      <createIndex catalogName="nba_stats_backup"
+      <createIndex catalogName="nba_stats_prod"
           indexName="team_standings_index"
           tableName="team_info">
         <column name="team" type="varchar(50)"/>

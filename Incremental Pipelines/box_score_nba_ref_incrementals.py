@@ -66,7 +66,7 @@ def create_pools(threads, links):
 
 def box_scrape(page_link):
     tables_df_list = []
-    soup = BeautifulSoup(requests.get(page_link).content, "html.parser")
+    soup = BeautifulSoup(requests.get(page_link, None).content, "html.parser")
     game_tag, score, game_hash = gen_game_tag_score(soup)
 
     for table in pd.read_html(page_link):
@@ -96,6 +96,9 @@ def sql_execute(conn, insert_statement):
     exe.execute(insert_statement)
     return exe.fetchall()
 
+def convert_date(date_value):
+    return datetime.datetime.strptime(date_value, '%m %d %Y').date()
+
 def insert_stats(df, table):
     engine = create_engine("mysql+pymysql://", creator=gen_db_conn)
     df.to_sql(con=engine, name=table, if_exists='replace', index=False)
@@ -117,6 +120,7 @@ def main():
     for content, game_tag, score in create_pools(threads, box_score_links):
         game_tag.columns=['game_hash', 'away_team', 'home_team', 'game_date']
         score.columns=['game_hash', 'away_score', 'home_score']
+        game_tag['game_date'] = pd.to_datetime(game_tag['game_date']).dt.date
         table_dict['box_score_map'] = pd.concat([game_tag, table_dict['box_score_map']])
         table_dict['game_results'] = pd.concat([score, table_dict['game_results']])
         for c, df in enumerate(content):

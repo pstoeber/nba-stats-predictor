@@ -7,3 +7,20 @@ INFO:root:Refreshing active_rosters table 2019-01-19 19:46:10.102570
 INFO:root:Active_rosters table refresh complete 2019-01-19 19:46:14.641309
 INFO:root:Refreshing injured_players table 2019-01-19 19:46:14.646529
 INFO:root:Injured_players table refresh complete 2019-01-19 19:46:18.044626
+INFO:root:Refreshing active_rosters table 2019-01-20 19:48:19.882030
+INFO:root:Active_rosters table refresh complete 2019-01-20 19:48:24.778834
+INFO:root:Refreshing injured_players table 2019-01-20 19:48:24.781827
+INFO:root:Injured_players table refresh complete 2019-01-20 19:48:28.075153
+INFO:root:Refreshing active_rosters table 2019-01-21 15:15:36.409178
+INFO:root:Active_rosters table refresh complete 2019-01-21 15:15:41.116243
+INFO:root:Refreshing injured_players table 2019-01-21 15:15:41.118938
+INFO:root:Injured_players table refresh complete 2019-01-21 15:15:44.296815
+INFO:root:Refreshing active_rosters table 2019-01-21 15:29:05.547478
+INFO:root:Active_rosters table refresh complete 2019-01-21 15:29:09.982844
+INFO:root:Refreshing injured_players table 2019-01-21 15:29:09.985516
+INFO:root:Injured_players table refresh complete 2019-01-21 15:29:12.967027
+INFO:root:Refreshing active_rosters table 2019-01-21 15:30:10.293572
+INFO:root:Active_rosters table refresh complete 2019-01-21 15:30:14.476247
+INFO:root:Refreshing injured_players table 2019-01-21 15:30:14.477018
+INFO:root:Injured_players table refresh complete 2019-01-21 15:30:16.846357
+INFO:root:Algo refresh intialized 2019-01-21 15:30:22.298702

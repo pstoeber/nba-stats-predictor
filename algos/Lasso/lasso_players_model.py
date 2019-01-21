@@ -20,7 +20,6 @@ from sqlalchemy import create_engine
 def get_games():
     link = 'http://www.espn.com/nba/schedule'
     raw_schedule = pd.read_html(link)[0]
-
     schedule = np.empty(shape=[0,2])
     for away, home in zip(raw_schedule.iloc[:, 0], raw_schedule.iloc[:, 1]):
         game = np.array([format_team(away), format_team(home)]).reshape(1,2)
@@ -98,12 +97,7 @@ def insert_into_database(df, table_name):
     return
 
 def main(arg1, arg2, arg3):
-    try:
-        connection = pymysql.connect(host='localhost', user='root', password='Sk1ttles', db='nba_stats_prod')
-    except:
-        print('Failed to connect to nba_stats_prod enviroment')
-        sys.exit(1)
-
+    connection = pymysql.connect(host='localhost', user='root', password='Sk1ttles', db='nba_stats_prod')
     schedule = get_games()
     train_dict = {'home':gen_cmd_str(extract_file(arg1)), 'away':gen_cmd_str(extract_file(arg2))}
     alphas = extract_alpha(connection)

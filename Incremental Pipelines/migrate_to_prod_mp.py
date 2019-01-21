@@ -1,9 +1,8 @@
 """
 
 python3 multi_threading_test.py "/Users/Philip/Documents/NBA prediction script/Incremental Pipelines/production_insert_statements/primary_queries" "/Users/Philip/Documents/NBA prediction script/Incremental Pipelines/production_insert_statements/multithread"
+
 """
-
-
 
 import pymysql
 import itertools
@@ -11,10 +10,14 @@ import codecs
 import sys
 import os
 import re
-#import logging
+import logging
+import datetime
 from functools import partial
 from multiprocessing import Pool
 from multiprocessing.dummy import Pool as ThreadPool
+
+def gen_timestamp():
+    return str(datetime.datetime.now())
 
 def find_files(dir):
     file_list = []
@@ -53,6 +56,8 @@ def gen_threads(files, flag):
     return
 
 def main(arg1, arg2):
+    logging.basicConfig(filename='algo_refresh_log.log', filemode='w', level=logging.INFO)
+    logging.info('Algo refresh intialized {}'.format(gen_timestamp()))
     primary_files = find_files(arg1)
     for file in primary_files:
         sql_execute(file, 0)

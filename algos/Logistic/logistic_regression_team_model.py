@@ -79,7 +79,7 @@ def insert_into_database(df):
     return
 
 def main(arg1, arg2, arg3):
-    connection = pymysql.connect(host='localhost', user='root', password='Sk1ttles', db='nba_stats_prod')    
+    connection = pymysql.connect(host='localhost', user='root', password='Sk1ttles', db='nba_stats_prod')
     schedule = get_games()
     Cs = get_c_values(connection)
     train_dict = {'home':gen_cmd_str(extract_file(arg1)), 'away':gen_cmd_str(extract_file(arg2))}
