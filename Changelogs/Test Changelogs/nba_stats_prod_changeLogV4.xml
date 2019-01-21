@@ -1061,6 +1061,7 @@
       <createTable tableName="pipeline_auditlog">
         <column name="pipeline_id" type="varchar(255)"></column>
         <column name="date" type="datetime"></column>
+        <column name="description" type="varchar(255)"></column>
       </createTable>
     </changeSet>
 

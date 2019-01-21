@@ -20,7 +20,6 @@ from sqlalchemy import create_engine
 def get_games():
     link = 'http://www.espn.com/nba/schedule'
     raw_schedule = pd.read_html(link)[0]
-
     schedule = np.empty(shape=[0,2])
     for away, home in zip(raw_schedule.iloc[:, 0], raw_schedule.iloc[:, 1]):
         game = np.array([format_team(away), format_team(home)]).reshape(1,2)
@@ -97,15 +96,10 @@ def insert_into_database(df, table_name):
     engine.dispose()
     return
 
-if __name__ == '__main__':
-    try:
-        connection = pymysql.connect(host='localhost', user='root', password='Sk1ttles', db='nba_stats_prod')
-    except:
-        print('Failed to connect to nba_stats_prod enviroment')
-        sys.exit(1)
-
+def main(arg1, arg2, arg3):
+    connection = pymysql.connect(host='localhost', user='root', password='Sk1ttles', db='nba_stats_prod')
     schedule = get_games()
-    train_dict = {'home':gen_cmd_str(extract_file(sys.argv[1])), 'away':gen_cmd_str(extract_file(sys.argv[2]))}
+    train_dict = {'home':gen_cmd_str(extract_file(arg1)), 'away':gen_cmd_str(extract_file(arg2))}
     alphas = extract_alpha(connection)
 
     for c, (k, v) in enumerate(train_dict.items()):
@@ -113,6 +107,9 @@ if __name__ == '__main__':
         train_df['minutes_played'] = train_df.loc[:, 'minutes_played'].apply(time_convert)
         train_df = days_of_rest(train_df)
 
-        test_query = gen_cmd_str(extract_file(sys.argv[3]))
+        test_query = gen_cmd_str(extract_file(arg3))
         tests = gen_test_dfs(connection, schedule.loc[:, k].tolist(), test_query)
         fit_lasso_model(train_df[train_df.loc[:, 'minutes_played'] >= 360], tests, alphas[c])
+
+if __name__ == '__main__':
+    main(sys.argv[1], sys.argv[2], sys.argv[3])
