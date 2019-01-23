@@ -15,6 +15,7 @@ import codecs
 import sys
 import logging
 from multiprocessing import Pool
+from multiprocessing import set_start_method
 from multiprocessing.dummy import Pool as ThreadPool
 from functools import partial
 from sqlalchemy import create_engine
@@ -35,7 +36,7 @@ def gen_dates(conn):
     return links_list
 
 def get_max_date(conn):
-    find_max_date = 'select date_add(max(game_date), interval +1 day) from nba_stats.box_score_map'
+    find_max_date = 'select date_add(max(game_date), interval -1 day) from nba_stats.box_score_map'
     return sql_execute(conn, find_max_date)[0][0]
 
 def get_links(links):

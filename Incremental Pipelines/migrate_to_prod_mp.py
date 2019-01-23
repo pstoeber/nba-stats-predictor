@@ -1,7 +1,5 @@
 """
-
 python3 multi_threading_test.py "/Users/Philip/Documents/NBA prediction script/Incremental Pipelines/production_insert_statements/primary_queries" "/Users/Philip/Documents/NBA prediction script/Incremental Pipelines/production_insert_statements/multithread"
-
 """
 
 import pymysql
@@ -28,7 +26,7 @@ def find_files(dir):
     return file_list
 
 def gen_db_conn():
-    return pymysql.connect(host='localhost', user='root', password='Sk1ttles', db='nba_stats_backup', autocommit=True)
+    return pymysql.connect(host='localhost', user='root', password='Sk1ttles', db='nba_stats_prod', autocommit=True)
 
 def extract_file(file):
     with open(file, 'r') as infile:
@@ -46,6 +44,8 @@ def sql_execute(file, flag):
         exe.execute('set session sql_mode = default;')
     else:
         exe.execute(gen_cmd_str(extract_file(file)))
+    exe.close()
+    logging.info('SQL executed successfully: {file} at {stamp}'.format(file=file, stamp=gen_timestamp()))
     return
 
 def gen_threads(files, flag):
@@ -57,7 +57,7 @@ def gen_threads(files, flag):
 
 def main(arg1, arg2):
     logging.basicConfig(filename='algo_refresh_log.log', filemode='w', level=logging.INFO)
-    logging.info('Algo refresh intialized {}'.format(gen_timestamp()))
+    logging.info('Algo refresh intialized {stamp}'.format(stamp=gen_timestamp()))
     primary_files = find_files(arg1)
     for file in primary_files:
         sql_execute(file, 0)

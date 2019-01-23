@@ -2,7 +2,6 @@
 command line arguement:
 
 python3 algo_wrapper.py "/Users/Philip/Documents/NBA prediction script/Incremental Pipelines/sql ddl/active_rosters_player_id.sql" "/Users/Philip/Documents/NBA prediction script/Incremental Pipelines/sql ddl/active_rosters_team_info.sql" "/Users/Philip/Documents/NBA prediction script/Incremental Pipelines/production_insert_statements/primary_queries" "/Users/Philip/Documents/NBA prediction script/Incremental Pipelines/production_insert_statements/multithread" "/Users/Philip/Documents/NBA prediction script/algos/Lasso/home_train.sql" "/Users/Philip/Documents/NBA prediction script/algos/Lasso/away_train.sql" "/Users/Philip/Documents/NBA prediction script/algos/Lasso/lasso_test.sql" "/Users/Philip/Documents/NBA prediction script/algos/Logistic/home_train.sql" "/Users/Philip/Documents/NBA prediction script/algos/Logistic/away_train.sql" "/Users/Philip/Documents/NBA prediction script/algos/Logistic/logistic_test.sql"
-
 """
 
 import pymysql
