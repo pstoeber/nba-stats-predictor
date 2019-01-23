@@ -39,7 +39,7 @@ def player_id_scraper(team_link):
     player_links = sorted(set(player_links)) #filtering out repeats from the spliced links list
     return player_links
 
-def player_stat_scrapper(player):
+def player_stat_scraper(player):
     soup = BeautifulSoup(requests.get(player, timeout=None).content, "html.parser")
     name = soup.find("h1").get_text() #finding player name
     exp = get_exp(soup)
@@ -120,7 +120,7 @@ def main():
         sys.exit(1)
 
     player_links = create_threads(player_id_scraper, find_team_names())
-    player_stats = create_threads(player_stat_scrapper, list(itertools.chain.from_iterable(player_links)))
+    player_stats = create_threads(player_stat_scraper, list(itertools.chain.from_iterable(player_links)))
     truncate_tables(myConnection)
     for c, stat in enumerate(player_stats):
         if stat != None:

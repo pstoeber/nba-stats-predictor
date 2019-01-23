@@ -59,6 +59,7 @@ def insert_into_database(row):
     cols = ['C_value', 'score', 'home_away', 'date']
     engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}".format(user="root", pw="Sk1ttles", db="nba_stats"))
     pd.DataFrame(row.reshape(1,4), columns=cols).to_sql(con=engine, name='c_values', if_exists='append', index=False)
+    return
 
 def plot_c_vals(c_vals, scores, cv_c, cv_score, flag):
     plt.figure()
