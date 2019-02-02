@@ -21,10 +21,9 @@ def extract_data(conn, sql):
     return pd.read_sql(sql=sql, con=conn, index_col=None)
 
 def player_pred_to_actual_pts(df):
-    for group, data in df.groupby(['team', 'game_date']):
-        plt.title('{team} Player Predictions'.format(team=group))
+    for i, data in df.groupby(['team', 'game_date']):
         sns.set_style('whitegrid')
-        plt.title('Predicted Points Vs. Actual Points')
+        plt.title('{team} Predicted Points Vs. Actual Points {date}'.format(team=i[0], date=i[1]))
         plt.xticks(rotation=90)
         sns.barplot(x='name', y='pts', data=data, hue='flag', palette='plasma_r')
         plt.show()
